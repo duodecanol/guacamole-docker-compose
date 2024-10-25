@@ -1,0 +1,30 @@
+services:
+  guacamole:
+    logging:
+      options:
+        max-size: "512m"
+    image: flcontainers/guacamole:${GUACAMOLE_VERSION:-1.5.5}
+    container_name: guacamole
+    restart: unless-stopped
+    environment:
+      TZ: 'UTC'
+      # EXTENSIONS: 'auth-totp,auth-ldap'
+    volumes:
+      - postgres:/config
+      - /etc/localtime:/etc/localtime:ro
+    ports:
+      # - 8888:8080
+      - 8080/tcp
+  nginx:
+    restart: always
+    image: nginx:latest
+    volumes:
+    - ./nginx/templates:/etc/nginx/templates:ro
+    - ./nginx/ssl/self.cert:/etc/nginx/ssl/self.cert:ro
+    - ./nginx/ssl/self-ssl.key:/etc/nginx/ssl/self-ssl.key:ro
+    ports:
+    - 8888:443
+
+volumes:
+  postgres:
+    driver: local
