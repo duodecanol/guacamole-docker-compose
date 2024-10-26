@@ -20,8 +20,7 @@ services:
     image: nginx:latest
     volumes:
     - ./nginx/templates:/etc/nginx/templates:ro
-    - ./nginx/ssl/self.cert:/etc/nginx/ssl/self.cert:ro
-    - ./nginx/ssl/self-ssl.key:/etc/nginx/ssl/self-ssl.key:ro
+    - ./nginx/ssl/:/etc/nginx/ssl/:ro
     ports:
     - 8888:443
 
